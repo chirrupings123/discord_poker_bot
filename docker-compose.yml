@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: poker_user
+      POSTGRES_PASSWORD: poker_password
+      POSTGRES_DB: poker_bot
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  bot:
+    build: .
+    depends_on:
+      - db
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://poker_user:poker_password@db:5432/poker_bot
+      DATABASE_URL_SYNC: postgresql+psycopg2://poker_user:poker_password@db:5432/poker_bot
+    restart: unless-stopped
+
+volumes:
+  pgdata:

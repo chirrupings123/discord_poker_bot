@@ -1,0 +1,14 @@
+🎴 Imagine if we had a Poker Bot on this server 🎴
+
+We could play Texas Hold'em with fake chips (no real money involved). Just for fun.
+
+Something like:
+• /register to get free chips
+• /poker create / join / start to set up a table
+• Buttons to Fold / Check / Call / Raise
+• Chips that save forever
+• Up to 9 people per table
+• /balance, /leaderboard, /stats to track everything
+• /rebuy if you run out of chips
+
+Would be a fun way to pass time whenever people are online. What do you all think? 🃏
