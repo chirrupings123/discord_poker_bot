@@ -105,7 +105,7 @@ class ActiveTable:
         if len(players) < 2:
             return None
 
-        random.shuffle(players)
+        players.sort(key=lambda p: p.seat_index)
         for i, p in enumerate(players):
             p.seat_index = i
             p.hole_cards = []

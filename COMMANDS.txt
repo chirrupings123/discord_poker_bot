@@ -1,0 +1,20 @@
+🎴 **POKER BOT — COMMANDS** 🎴
+
+**Getting Started**
+`/register` — Get 10,000 free chips
+`/balance` — Check your chips
+`/profile` — View your stats
+
+**Playing Poker**
+`/poker create buyin:1000` — Create a table (change the number)
+`/poker list` — See all active tables
+`/poker join table_id:1` — Join a table
+`/poker leave` — Leave the table
+`/poker start` — Start the game (host only)
+
+**More**
+`/leaderboard` — Richest / most wins / biggest pots
+`/stats` — Detailed poker stats
+`/rebuy` — 5,000 chips if you're broke (7 day cooldown)
+
+Up to 9 players. Chips save forever. No real money. 🃏

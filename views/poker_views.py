@@ -25,6 +25,39 @@ class PokerButton(discord.ui.Button["PokerView"]):
         await self.view.handle_action(interaction, self.action, self.amount)
 
 
+class CustomRaiseButton(discord.ui.Button["PokerView"]):
+    def __init__(self, row: int = 2):
+        super().__init__(label="✏️ Custom", style=discord.ButtonStyle.secondary, row=row)
+
+    async def callback(self, interaction: discord.Interaction):
+        modal = RaiseModal(self.view, interaction)
+        await interaction.response.send_modal(modal)
+
+
+class RaiseModal(discord.ui.Modal, title="Enter your raise amount"):
+    amount = discord.ui.TextInput(
+        label="Amount",
+        placeholder="Enter chip amount (e.g. 500)",
+        min_length=1,
+        max_length=10,
+    )
+
+    def __init__(self, view: PokerView, interaction: discord.Interaction):
+        super().__init__()
+        self._view = view
+        self._interaction = interaction
+
+    async def on_submit(self, interaction: discord.Interaction):
+        try:
+            amount = float(self.amount.value)
+            if amount <= 0:
+                await interaction.response.send_message("Amount must be positive.", ephemeral=True)
+                return
+            await self._view.handle_action(interaction, "raise", amount)
+        except ValueError:
+            await interaction.response.send_message("Enter a valid number.", ephemeral=True)
+
+
 class PokerView(discord.ui.View):
     """
     A view that persists across interactions for a given table.
@@ -41,7 +74,7 @@ class PokerView(discord.ui.View):
         self.clear_items()
 
         engine = self.table.engine
-        if not engine or self.table.state != "playing":
+        if not engine or self.table.state.value != "playing":
             return
 
         current = engine.can_act_player()
@@ -76,6 +109,7 @@ class PokerView(discord.ui.View):
                     self.add_item(PokerButton("raise", f"½ Pot ({pot_raise})", discord.ButtonStyle.success, row=1, amount=float(pot_raise)))
                 all_in_amount = player_chips
                 self.add_item(PokerButton("raise", f"All-In ({all_in_amount:.0f})", discord.ButtonStyle.success, row=1, amount=all_in_amount))
+            self.add_item(CustomRaiseButton(row=2))
         else:
             self.add_item(PokerButton("raise", "Raise", discord.ButtonStyle.success, row=1, disabled=True))
 
@@ -175,7 +209,8 @@ class PokerView(discord.ui.View):
                             "hand_won" if net > 0 else "hand_lost",
                         )
 
-            self.table.state = "hand_complete"
+            from poker.game_manager import TableState
+            self.table.state = TableState.HAND_COMPLETE
         except Exception as e:
             print(f"Error finishing hand: {e}")
 

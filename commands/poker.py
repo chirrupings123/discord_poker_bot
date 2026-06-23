@@ -4,6 +4,7 @@ from discord.ext import commands
 
 from database.connection import async_session
 from database.models import TableStatus, GameTable
+from poker.game_manager import TableState
 from services.user_service import get_user, update_balance
 from services.poker_service import create_table_db, set_table_status, create_game_record, save_game_player, log_action
 from poker.game_manager import create_table, get_table, list_tables, remove_table, ActiveTable
@@ -236,7 +237,7 @@ def register_commands(bot: commands.Bot, guild: discord.Object | None):
         async with async_session() as session:
             await set_table_status(session, table.table_id, TableStatus.PLAYING)
 
-        table.state = "playing"
+        table.state = TableState.PLAYING
 
         engine = table.start_new_hand()
         if engine is None:

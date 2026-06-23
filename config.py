@@ -20,7 +20,7 @@ class Config:
     DEFAULT_STARTING_CHIPS: int = int(os.getenv("DEFAULT_STARTING_CHIPS", "10000"))
     REBUY_CHIPS: int = int(os.getenv("REBUY_CHIPS", "5000"))
     REBUY_COOLDOWN_DAYS: int = int(os.getenv("REBUY_COOLDOWN_DAYS", "7"))
-    MIN_ACCOUNT_AGE_DAYS: int = int(os.getenv("MIN_ACCOUNT_AGE_DAYS", "30"))
+    MIN_ACCOUNT_AGE_DAYS: int = int(os.getenv("MIN_ACCOUNT_AGE_DAYS", "0"))
 
     SMALL_BLIND: int = 10
     BIG_BLIND: int = 20
